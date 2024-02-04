@@ -26,8 +26,8 @@ class MoshiMoshi(
             .build()
     }
 
-    fun <T> create(service: Class<T>?) {
-        retrofit.create(service)
+    fun <T> create(service: Class<T>?): T {
+        return retrofit.create(service)
     }
 
     suspend fun <T> load(call: suspend () -> Response<T>): T {

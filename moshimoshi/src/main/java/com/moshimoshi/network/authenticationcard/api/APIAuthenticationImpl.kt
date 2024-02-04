@@ -10,8 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 
-class APIAuthenticationImpl(private val context: Context,
-                            private val loginCall: Request,
+class APIAuthenticationImpl(private val loginCall: Request,
                             private val refreshCall: Request): AuthenticationCard {
 
     override suspend fun getCurrentToken(): Tokens {
