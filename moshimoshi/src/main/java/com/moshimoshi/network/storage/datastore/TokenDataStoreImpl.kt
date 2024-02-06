@@ -48,6 +48,11 @@ class TokenDataStoreImpl(uniqueIdentifier: String, private val dataStore: DataSt
     private inline val Preferences.idTokenExpires
         get() = this[longPreferencesKey(idTokenDateKey)] ?: 0
 
+    override suspend fun clear() {
+        dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
 
     private val accessTokenFlow: Flow<Token> = dataStore.data
         .catch {

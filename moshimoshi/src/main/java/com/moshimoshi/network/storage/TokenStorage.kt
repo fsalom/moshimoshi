@@ -9,4 +9,5 @@ interface TokenStorage {
     suspend fun setRefreshToken(token: Token)
     suspend fun getIdToken(): Token?
     suspend fun setIdToken(token: Token)
+    suspend fun clear()
 }
