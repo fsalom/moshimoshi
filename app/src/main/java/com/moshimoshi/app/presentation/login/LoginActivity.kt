@@ -6,11 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,11 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moshimoshi.app.di.Container
-import com.moshimoshi.app.presentation.app.HomeViewModel
-import com.moshimoshi.app.ui.module.ui.theme.MoshiMoshiTheme
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import com.moshimoshi.app.ui.theme.MoshiMoshiTheme
 
 class LoginActivity : ComponentActivity() {
     private val viewModel = LoginViewModel()
