@@ -1,4 +1,4 @@
-package com.moshimoshi.network
+package com.moshimoshi.network.entities
 
 sealed class NetworkError : Exception() {
     object EmptyBody : NetworkError()
