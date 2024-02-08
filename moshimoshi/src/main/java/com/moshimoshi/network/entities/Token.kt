@@ -6,5 +6,5 @@ data class Token(
     var timestampExpires: Long = 0,
 ): Serializable {
     var isValid: Boolean = false
-        get() = timestampExpires > 2
+        get() = timestampExpires > System.currentTimeMillis()
 }
