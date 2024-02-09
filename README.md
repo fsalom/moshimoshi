@@ -3,9 +3,19 @@
 ## ✍️ About
 > Moshi moshi, or もしもし, is a common Japanese phrase that Japanese people use when picking up the phone. It's a casual greeting used for friends and family, like a “hello”
 
-Welcome to the MoshiMoshi Library, the essential toolkit for integrating OAuth2 authentication into your Kotlin applications seamlessly. Built on top of the powerful Retrofit HTTP client, this library is designed to simplify the process of adding secure and efficient OAuth2 authentication flows to your mobile or server-side applications.
+Welcome to the MoshiMoshi Library, the essential toolkit for integrating OAuth2 authentication into your Kotlin applications seamlessly. Built on top of the powerful Retrofit HTTP client, this library is designed to simplify the process of adding secure and efficient OAuth2 authentication flows to your mobile or server-side applications based on kotlin.
 
 ## 📦 Installation 
+
+## 🛠️ Features
+- **Easy Integration**: With minimal setup, you can integrate OAuth2 authentication flows into your Kotlin applications, making your development process smoother and faster.
+- **Retrofit Compatibility**: Leveraging Retrofit, one of the most popular HTTP client libraries for Android and JVM, ensures that your network operations are efficient, maintainable, and scalable.
+- **Flexible OAuth2 Support**: Whether you need to implement Authorization Code Grant, Implicit Grant, Resource Owner Password Credentials Grant, or Client Credentials Grant, our library has got you covered.
+- **Secure Token Management**: Automatically handles token refresh and secure storage of access tokens, ensuring that your application communications are always secure.
+- **Customizable**: Designed with flexibility in mind, allowing you to customize the authentication flow to meet your specific requirements without compromising on security.
+
+## 🤷‍♂️Why use Moshi Moshi Library?
+In the modern application development landscape, securing your application's data and ensuring only authenticated users can access certain resources is paramount. OAuth2 provides a robust framework for securing your application's access, and by using the **Moshi Moshi** Library, you're reducing the complexity of implementing these security measures. Spend less time worrying about authentication flows and more time focusing on building the features that matter to your users.
 
 ## 🦾 Core elements
 There are 4 main pieces in this system. Each one of them is responsable of their own area.
