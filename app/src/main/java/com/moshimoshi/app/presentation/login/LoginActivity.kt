@@ -28,6 +28,7 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val isLogged by viewModel.isLogged.collectAsState()
+            val error by viewModel.error.collectAsState()
             MoshiMoshiTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -36,6 +37,11 @@ class LoginActivity : ComponentActivity() {
                 ) {
                     Column(modifier = Modifier.padding(all = 20.dp)) {
                         viewModel.load()
+                        if (error.isNotEmpty()) {
+                            Box {
+                                Text(error)
+                            }
+                        }
                         if (isLogged) {
                             Box {
                                 Text("Logueado")
@@ -55,7 +61,19 @@ class LoginActivity : ComponentActivity() {
                                     )
                                 }) {
                                     Text(
-                                        text = "Login"
+                                        text = "Login correcto"
+                                    )
+                                }
+                            }
+                            Box {
+                                Button(onClick = {
+                                    viewModel.login(
+                                        username = "desarrollo@do.es",
+                                        password = "12345678A"
+                                    )
+                                }) {
+                                    Text(
+                                        text = "Login incorrecto"
                                     )
                                 }
                             }
