@@ -7,6 +7,57 @@ Welcome to the MoshiMoshi Library, the essential toolkit for integrating OAuth2 
 
 ## 📦 Installation 
 
+### Prerequisites
+
+- Git installed on your machine
+- An existing Git repository for your project
+
+### Step 1: Add the Library as a Submodule
+
+Open your terminal and navigate to the root directory of your project. Run the following command to add the Kotlin OAuth2 Retrofit Library as a submodule:
+
+```bash
+Copy code
+git submodule add https://github.com/fsalom/moshimoshi.git path/to/submodule
+```
+Save to grepper
+
+### Step 2: Initialize and Update the Submodule
+
+After adding the submodule, you need to initialize it and fetch the contents. Run the following commands:
+
+```bash
+Copy code
+git submodule init
+git submodule update
+```
+Save to grepper
+These commands will initialize your local configuration file and fetch all the data from the Kotlin OAuth2 Retrofit Library project, placing it in the path you specified.
+
+### Step 3: Commit the Submodule to Your Project
+
+Now that the submodule is added and initialized, you need to commit these changes to your project. This step ensures that other contributors can initialize and update the submodule on their end after pulling your project. Run the following commands:
+
+```bash
+Copy code
+git add .
+git commit -m "Added Kotlin OAuth2 Retrofit Library as a submodule."
+git push
+```
+Save to grepper
+
+### Step 4: Cloning a Project with Submodules
+If someone is cloning your project with the submodule for the first time, they should clone the repository as usual and then run the following commands to initialize and update the submodules:
+
+```bash
+Copy code
+git clone https://github.com/your-username/your-project.git
+cd your-project
+git submodule update --init --recursive
+```
+Save to grepper
+This ensures that MoshiMoshi Library submodule is correctly set up and ready to use in their local development environment.
+
 ## 🛠️ Features
 - **Easy Integration**: With minimal setup, you can integrate OAuth2 authentication flows into your Kotlin applications, making your development process smoother and faster.
 - **Retrofit Compatibility**: Leveraging Retrofit, one of the most popular HTTP client libraries for Android and JVM, ensures that your network operations are efficient, maintainable, and scalable.
