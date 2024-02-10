@@ -5,6 +5,9 @@
 
 Welcome to the MoshiMoshi Library, the essential toolkit for integrating OAuth2 authentication into your Kotlin applications seamlessly. Built on top of the powerful Retrofit HTTP client, this library is designed to simplify the process of adding secure and efficient OAuth2 authentication flows to your mobile or server-side applications based on kotlin.
 
+## 🤷‍♂️ Why use Moshi Moshi Library?
+In the modern application development landscape, securing your application's data and ensuring only authenticated users can access certain resources is paramount. OAuth2 provides a robust framework for securing your application's access, and by using the **Moshi Moshi** Library, you're reducing the complexity of implementing these security measures. Spend less time worrying about authentication flows and more time focusing on building the features that matter to your users.
+
 ## 📦 Installation 
 
 ### Prerequisites
@@ -31,8 +34,8 @@ Copy code
 git submodule init
 git submodule update
 ```
-Save to grepper
-These commands will initialize your local configuration file and fetch all the data from the Kotlin OAuth2 Retrofit Library project, placing it in the path you specified.
+
+These commands will initialize your local configuration file and fetch all the data from Moshi Moshi Library project, placing it in the path you specified.
 
 ### Step 3: Commit the Submodule to Your Project
 
@@ -41,12 +44,12 @@ Now that the submodule is added and initialized, you need to commit these change
 ```bash
 Copy code
 git add .
-git commit -m "Added Kotlin OAuth2 Retrofit Library as a submodule."
+git commit -m "Add MoshiMoshi Library as a submodule."
 git push
 ```
-Save to grepper
 
 ### Step 4: Cloning a Project with Submodules
+
 If someone is cloning your project with the submodule for the first time, they should clone the repository as usual and then run the following commands to initialize and update the submodules:
 
 ```bash
@@ -55,7 +58,7 @@ git clone https://github.com/your-username/your-project.git
 cd your-project
 git submodule update --init --recursive
 ```
-Save to grepper
+
 This ensures that MoshiMoshi Library submodule is correctly set up and ready to use in their local development environment.
 
 ## 🛠️ Features
@@ -65,29 +68,14 @@ This ensures that MoshiMoshi Library submodule is correctly set up and ready to 
 - **Secure Token Management**: Automatically handles token refresh and secure storage of access tokens, ensuring that your application communications are always secure.
 - **Customizable**: Designed with flexibility in mind, allowing you to customize the authentication flow to meet your specific requirements without compromising on security.
 
-## 🤷‍♂️Why use Moshi Moshi Library?
-In the modern application development landscape, securing your application's data and ensuring only authenticated users can access certain resources is paramount. OAuth2 provides a robust framework for securing your application's access, and by using the **Moshi Moshi** Library, you're reducing the complexity of implementing these security measures. Spend less time worrying about authentication flows and more time focusing on building the features that matter to your users.
-
 ## 🦾 Core elements
+
 There are 4 main pieces in this system. Each one of them is responsable of their own area.
 
 - **Authentication Card**: responsable of authentication flow.
 - **Authenticator**:  responsable of managing tokens and refresh them.
 - **Interceptor**: responsable of handling request and authenticate them.
 - **TokenStore**: responsable of storing token information (by default UserDefaults)
-
-### Network
-
-### Endpoint
-
-## 🚀 Usage non authorized API
-As an example we will use https://coincap.io and their crypto list. This API is free to use and do not have any kind of authentication system
-
-### Endpoint
-
-### Making request
-
-## 🔒 Usage authorized API
 
 ## 📚 Examples
 This repo includes an android example, which is attached to [App](https://github.com/fsalom/moshimoshi/tree/main/app/src/main/java/com/moshimoshi/app)
