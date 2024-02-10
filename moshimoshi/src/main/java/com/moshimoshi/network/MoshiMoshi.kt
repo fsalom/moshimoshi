@@ -1,6 +1,8 @@
 package com.moshimoshi.network
 
-import com.moshimoshi.network.storage.TokenStorage
+import com.moshimoshi.network.authenticator.Authenticator
+import com.moshimoshi.network.entities.HttpCodeError
+import com.moshimoshi.network.entities.NetworkError
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter
@@ -14,6 +16,7 @@ import java.net.SocketTimeoutException
 class MoshiMoshi(
     private val baseUrl: String,
     private val interceptor: Interceptor,
+    val authenticator: Authenticator,
     converterFactory: Converter.Factory = GsonConverterFactory.create()
 ) {
     private lateinit var retrofit: Retrofit
@@ -31,21 +34,6 @@ class MoshiMoshi(
     }
 
     suspend fun <T> load(call: suspend () -> Response<T>): T {
-        try {
-            val response = call()
-            response.body()?.let { body ->
-                if (response.isSuccessful) {
-                    return body
-                } else {
-                    throw response.code().toHttpError()
-                }
-            } ?: throw NetworkError.EmptyBody
-        } catch (e: Exception) {
-            throw handler(e)
-        }
-    }
-
-    suspend fun <T> loadAuthenticated(call: suspend () -> Response<T>): T {
         try {
             val response = call()
             response.body()?.let { body ->
