@@ -57,6 +57,17 @@ git submodule update --init --recursive
 
 This ensures that MoshiMoshi Library submodule is correctly set up and ready to use in their local development environment.
 
+### Step 5: Add dependency to your project
+
+In the `setting.gradle` of your project you must add:
+
+```bash
+include(":PATH_TO_SUBMODULE:moshimoshi")
+
+example:
+include(":mySubmoduleFolder:moshimoshi")
+```
+
 ## 🛠️ Features
 - **Easy Integration**: With minimal setup, you can integrate OAuth2 authentication flows into your Kotlin applications, making your development process smoother and faster.
 - **Retrofit Compatibility**: Leveraging Retrofit, one of the most popular HTTP client libraries for Android and JVM, ensures that your network operations are efficient, maintainable, and scalable.
