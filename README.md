@@ -20,7 +20,6 @@ In the modern application development landscape, securing your application's dat
 Open your terminal and navigate to the root directory of your project. Run the following command to add the Kotlin OAuth2 Retrofit Library as a submodule:
 
 ```bash
-Copy code
 git submodule add https://github.com/fsalom/moshimoshi.git path/to/submodule
 ```
 Save to grepper
@@ -30,7 +29,6 @@ Save to grepper
 After adding the submodule, you need to initialize it and fetch the contents. Run the following commands:
 
 ```bash
-Copy code
 git submodule init
 git submodule update
 ```
@@ -42,7 +40,6 @@ These commands will initialize your local configuration file and fetch all the d
 Now that the submodule is added and initialized, you need to commit these changes to your project. This step ensures that other contributors can initialize and update the submodule on their end after pulling your project. Run the following commands:
 
 ```bash
-Copy code
 git add .
 git commit -m "Add MoshiMoshi Library as a submodule."
 git push
@@ -53,7 +50,6 @@ git push
 If someone is cloning your project with the submodule for the first time, they should clone the repository as usual and then run the following commands to initialize and update the submodules:
 
 ```bash
-Copy code
 git clone https://github.com/your-username/your-project.git
 cd your-project
 git submodule update --init --recursive
@@ -69,7 +65,7 @@ This ensures that MoshiMoshi Library submodule is correctly set up and ready to 
 - **Customizable**: Designed with flexibility in mind, allowing you to customize the authentication flow to meet your specific requirements without compromising on security.
 
 ## 🦾 Core elements
-
+    
 There are 4 main pieces in this system. Each one of them is responsable of their own area.
 
 - **Authentication Card**: responsable of authentication flow.
