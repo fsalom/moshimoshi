@@ -1,6 +1,5 @@
 package com.moshimoshi.network.entities
 
-import okhttp3.Headers
 import okhttp3.MultipartBody
 import okhttp3.Request
 import org.json.JSONObject
