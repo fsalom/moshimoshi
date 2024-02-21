@@ -1,7 +1,9 @@
 package com.moshimoshi.network.entities
 
+import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.Request
+import okhttp3.RequestBody
 import org.json.JSONObject
 import java.io.Serializable
 
@@ -9,14 +11,19 @@ enum class Method {
     GET, POST, PUT, PATCH
 }
 
+enum class BodyType {
+    JSON, MULTIPART, NONE
+}
+
 data class Endpoint(
     var url: String = "",
     var method: Method = Method.GET,
-    private var json: JSONObject? = null,
+    var bodyType: BodyType = BodyType.NONE,
     private var headers: List<Parameter> = emptyList(),
-    private var parameters: List<Parameter> = emptyList(),
     private var queryParams: List<Parameter> = emptyList(),
+    private var parameters: List<Parameter> = emptyList(),
     private var formParams: List<Parameter> = emptyList(),
+    private var jsonParams: List<Parameter> = emptyList(),
 ): Serializable {
     private fun checkIfExists(list:  List<Parameter>, key: String): Boolean {
         list.forEach {
@@ -40,12 +47,34 @@ data class Endpoint(
     fun getRequest(): Request {
         var request = Request.Builder()
             .url(url)
-        var body = MultipartBody.Builder()
-        if(formParams.isNotEmpty()) {
-            body.setType(MultipartBody.FORM)
+
+        var body: RequestBody = MultipartBody.Builder().build()
+
+        if(formParams.isNotEmpty() || bodyType == BodyType.MULTIPART) {
+            var bodyWithMultipart = MultipartBody.Builder()
+            bodyWithMultipart.setType(MultipartBody.FORM)
             formParams.forEach {
-                body.addFormDataPart(it.key, it.value)
+                bodyWithMultipart.addFormDataPart(it.key, it.value)
             }
+            parameters.forEach {
+                bodyWithMultipart.addFormDataPart(it.key, it.value)
+            }
+            body = bodyWithMultipart.build()
+        }
+
+        if(jsonParams.isNotEmpty() || bodyType == BodyType.JSON) {
+            var jsonObject = JSONObject()
+            jsonParams.forEach {
+                jsonObject.put(it.key, it.value)
+            }
+            parameters.forEach {
+                jsonObject.put(it.key, it.value)
+            }
+            body = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonObject.toString()
+            )
+
         }
 
         if(headers.isNotEmpty()) {
@@ -59,16 +88,16 @@ data class Endpoint(
                 request
             }
             Method.POST -> {
-                 request
-                     .post(body.build())
+                request
+                    .post(body)
             }
             Method.PUT -> {
                 request
-                    .put(body.build())
+                    .put(body)
             }
             Method.PATCH -> {
                 request
-                    .patch(body.build())
+                    .patch(body)
             }
         }
         return request.build()
