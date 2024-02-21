@@ -1,5 +1,6 @@
 package com.moshimoshi.network.entities
 
+import okhttp3.Headers
 import okhttp3.MultipartBody
 import okhttp3.Request
 import org.json.JSONObject
@@ -13,9 +14,10 @@ data class Endpoint(
     var url: String = "",
     var method: Method = Method.GET,
     private var json: JSONObject? = null,
+    private var headers: List<Parameter> = emptyList(),
     private var parameters: List<Parameter> = emptyList(),
     private var queryParams: List<Parameter> = emptyList(),
-    private var formParams: List<Parameter> = emptyList()
+    private var formParams: List<Parameter> = emptyList(),
 ): Serializable {
     private fun checkIfExists(list:  List<Parameter>, key: String): Boolean {
         list.forEach {
@@ -39,7 +41,6 @@ data class Endpoint(
     fun getRequest(): Request {
         var request = Request.Builder()
             .url(url)
-            .build()
         var body = MultipartBody.Builder()
         if(formParams.isNotEmpty()) {
             body.setType(MultipartBody.FORM)
@@ -48,26 +49,29 @@ data class Endpoint(
             }
         }
 
-        return when(method) {
+        if(headers.isNotEmpty()) {
+            headers.forEach {
+                request.addHeader(it.key, it.value)
+            }
+        }
+
+        when(method) {
             Method.GET -> {
                 request
             }
             Method.POST -> {
-                 request.newBuilder()
-                    .post(body.build())
-                    .build()
+                 request
+                     .post(body.build())
             }
             Method.PUT -> {
-                request.newBuilder()
+                request
                     .put(body.build())
-                    .build()
             }
             Method.PATCH -> {
-                request.newBuilder()
+                request
                     .patch(body.build())
-                    .build()
             }
         }
-
+        return request.build()
     }
 }
