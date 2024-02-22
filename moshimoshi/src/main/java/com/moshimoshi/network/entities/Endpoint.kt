@@ -34,14 +34,8 @@ data class Endpoint(
         return false
     }
 
-    fun add(formParams: List<Parameter>) {
-        formParams.forEach { param ->
-            if(!checkIfExists(list = this.formParams, key = param.key)) {
-                this.formParams = this.formParams + param
-            } else {
-                this.formParams.filter { it.key == param.key }.forEach { it.value = param.value}
-            }
-        }
+    fun add(params: List<Parameter>) {
+        parameters = params
     }
 
     fun getRequest(): Request {
@@ -74,7 +68,6 @@ data class Endpoint(
                 MediaType.parse("application/json; charset=utf-8"),
                 jsonObject.toString()
             )
-
         }
 
         if(headers.isNotEmpty()) {

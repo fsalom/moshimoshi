@@ -24,7 +24,7 @@ class APIAuthenticationImpl(private var loginEndpoint: Endpoint,
         return withContext(Dispatchers.IO) {
             try {
                 var completeLoginEndpoint = loginEndpoint
-                completeLoginEndpoint.add(formParams = parameters)
+                completeLoginEndpoint.add(params = parameters)
                 val request = completeLoginEndpoint.getRequest()
                 val response = OkHttpClient().newCall(request).execute()
                 val gson = GsonBuilder().create()
@@ -41,7 +41,7 @@ class APIAuthenticationImpl(private var loginEndpoint: Endpoint,
             try {
                 var completeRefreshEndpoint = refreshEndpoint
                 var refreshParameter = Parameter(key = "refresh_token", value = refreshToken)
-                completeRefreshEndpoint.add(formParams = listOf<Parameter>(refreshParameter))
+                completeRefreshEndpoint.add(params = listOf<Parameter>(refreshParameter))
                 val request = completeRefreshEndpoint.getRequest()
                 val response = OkHttpClient().newCall(request).execute()
                 val gson = GsonBuilder().create()
