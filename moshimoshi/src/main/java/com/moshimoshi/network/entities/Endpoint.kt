@@ -42,7 +42,7 @@ data class Endpoint(
         var request = Request.Builder()
             .url(url)
 
-        var body: RequestBody = MultipartBody.Builder().build()
+        var body: RequestBody? = null
 
         if(formParams.isNotEmpty() || bodyType == BodyType.MULTIPART) {
             var bodyWithMultipart = MultipartBody.Builder()
