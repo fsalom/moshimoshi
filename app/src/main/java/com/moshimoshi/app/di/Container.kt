@@ -59,7 +59,7 @@ class Container() {
         loginEndpoint = loginEndpoint,
         refreshEndpoint = refreshEndpoint,
         packageName = context.packageName,
-        className = "com.moshimoshi.app.presentation.login.LoginActivity",
+        className = LoginActivity::class.java.canonicalName,
         context = context)
 
     val authenticator = AuthenticatorImpl(
