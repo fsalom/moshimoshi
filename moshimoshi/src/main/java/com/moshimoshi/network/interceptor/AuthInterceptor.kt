@@ -9,16 +9,15 @@ class AuthInterceptor(private val authenticator: Authenticator) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originRequest = chain.request()
-        val builder = originRequest.newBuilder()
+        val requestWithHeaders = authenticator.addHeaders(originRequest.newBuilder())
 
         return when {
             originRequest.authenticated() -> {
-                var currentRequest = chain.request()
-                var request = authenticator.authorize(request = currentRequest.newBuilder())
-                chain.proceed(request.build())
+                var requestAuthenticated = authenticator.authorize(request = requestWithHeaders)
+                chain.proceed(requestAuthenticated.build())
             }
             else -> {
-                chain.proceed(builder.build())
+                chain.proceed(requestWithHeaders.build())
             }
         }
     }

@@ -6,7 +6,8 @@ import okhttp3.Request
 
 interface Authenticator {
     var tokenStore: TokenStorage
-    fun authorize(request: Request.Builder ): Request.Builder
+    fun addHeaders(request: Request.Builder): Request.Builder
+    fun authorize(request: Request.Builder): Request.Builder
     suspend fun getNewToken(parameters: List<Parameter>)
     suspend fun getCurrentToken(): String?
     suspend fun isLogged(): Boolean

@@ -12,12 +12,21 @@ data class LoginFailed(override val message: String) : Exception(message)
 
 class AuthenticatorImpl (
     override var tokenStore: TokenStorage,
-    val card: AuthenticationCard): Authenticator {
+    private val headers: List<Parameter>,
+    private val card: AuthenticationCard): Authenticator {
 
+    override fun addHeaders(request: Request.Builder): Request.Builder {
+        return runBlocking {
+            headers.forEach {
+                request.addHeader(it.key, it.value)
+            }
+            return@runBlocking request
+        }
+    }
     override fun authorize(request: Request.Builder ): Request.Builder  {
         return runBlocking {
             val accessToken = getCurrentToken()
-            request .addHeader("Authorization", "Bearer $accessToken")
+            request.addHeader("Authorization", "Bearer $accessToken")
             return@runBlocking request
         }
     }
