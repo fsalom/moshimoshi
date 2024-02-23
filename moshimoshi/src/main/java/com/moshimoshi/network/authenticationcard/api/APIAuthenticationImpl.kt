@@ -60,6 +60,7 @@ class APIAuthenticationImpl(private var loginEndpoint: Endpoint,
     private fun showLogin() {
         val intent = Intent()
         intent.setClassName(packageName, className)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
 }
