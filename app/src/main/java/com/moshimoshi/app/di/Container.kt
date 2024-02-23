@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.moshimoshi.app.presentation.login.LoginActivity
 import com.moshimoshi.network.MoshiMoshi
 import com.moshimoshi.network.authenticationcard.api.APIAuthenticationImpl
 import com.moshimoshi.network.authenticator.AuthenticatorImpl
@@ -57,12 +58,13 @@ class Container() {
     private val authenticationCard = APIAuthenticationImpl(
         loginEndpoint = loginEndpoint,
         refreshEndpoint = refreshEndpoint,
-        packageName = "com.moshimoshi.app",
+        packageName = context.packageName,
         className = "com.moshimoshi.app.presentation.login.LoginActivity",
         context = context)
 
     val authenticator = AuthenticatorImpl(
         tokenStore = tokenStore,
+        headers = emptyList(),
         card = authenticationCard)
 
     private val authInterceptor = AuthInterceptor(
