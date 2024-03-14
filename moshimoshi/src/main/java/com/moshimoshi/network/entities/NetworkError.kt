@@ -1,18 +1,19 @@
 package com.moshimoshi.network.entities
 
-sealed class NetworkError : Exception() {
+sealed class NetworkError: Exception() {
+    data class Failure(val code: Int, val body: String) : NetworkError()
+    object Unknown : NetworkError()
+    object NoInternet : NetworkError()
     object EmptyBody : NetworkError()
-    class HttpException(val description: String) : NetworkError()
-    class Network(val description: String) : NetworkError()
-    class Timeout(val description: String) : NetworkError()
-    class Unknown(val description: String) : NetworkError()
-}
+    object Timeout: NetworkError()
 
-sealed class HttpCodeError : Exception() {
-    object ServerNoContent : HttpCodeError() //204
-    object BadRequest : HttpCodeError() //400
-    object Unauthorized : HttpCodeError() //401
-    object Forbidden : HttpCodeError()  //403
-    object NotFound : HttpCodeError() //404
-    object InternalServerError : HttpCodeError() //500
+    override fun toString(): String {
+        return when (this) {
+            is Failure -> "NetworkError: Failure(code=$code, body='$body')"
+            is Unknown -> "NetworkError: Unknown"
+            is NoInternet -> "NetworkError: NoInternet"
+            is Timeout -> "NetworkError: Timeout"
+            is EmptyBody -> "NetworkError: EmptyBody"
+        }
+    }
 }
