@@ -1,7 +1,6 @@
 package com.moshimoshi.network
 
 import com.moshimoshi.network.authenticator.Authenticator
-import com.moshimoshi.network.entities.HttpCodeError
 import com.moshimoshi.network.entities.NetworkError
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -19,15 +18,11 @@ class MoshiMoshi(
     val authenticator: Authenticator,
     converterFactory: Converter.Factory = GsonConverterFactory.create()
 ) {
-    private lateinit var retrofit: Retrofit
-
-    init {
-        retrofit = Retrofit.Builder()
-            .addConverterFactory(converterFactory)
-            .baseUrl(baseUrl)
-            .client(OkHttpClient.Builder().addInterceptor(interceptor).build())
-            .build()
-    }
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .addConverterFactory(converterFactory)
+        .baseUrl(baseUrl)
+        .client(OkHttpClient.Builder().addInterceptor(interceptor).build())
+        .build()
 
     fun <T> create(service: Class<T>?): T {
         return retrofit.create(service)
@@ -36,38 +31,28 @@ class MoshiMoshi(
     suspend fun <T> load(call: suspend () -> Response<T>): T {
         try {
             val response = call()
-            response.body()?.let { body ->
-                if (response.isSuccessful) {
-                    return body
-                } else {
-                    throw response.code().toHttpError()
-                }
-            } ?: throw NetworkError.EmptyBody
-        } catch (e: Exception) {
-            throw handler(e)
+            if (response.isSuccessful) {
+                return response.body() ?: throw  NetworkError.EmptyBody
+            } else {
+                val code = response.code()
+                val body = response.errorBody()?.string() ?: ""
+                throw RuntimeException(NetworkError.Failure(code, body).toString())
+            }
+        } catch (error: Exception) {
+            throw handler(error)
         }
     }
-
-    private fun Int.toHttpError() =
-        when (this) {
-            204 -> HttpCodeError.ServerNoContent
-            400 -> HttpCodeError.BadRequest
-            401 -> HttpCodeError.Unauthorized
-            403 -> HttpCodeError.Forbidden
-            404 -> HttpCodeError.NotFound
-            else -> HttpCodeError.InternalServerError
-        }
 
     private fun handler(error: Exception): Exception {
         return when (error) {
             is HttpException -> {
-                val body = error.response()?.errorBody().toString()
-                NetworkError.HttpException(body)
+                val code = error.response()?.code()
+                val body = error.response()?.errorBody()?.string() ?: ""
+                NetworkError.Failure(code ?: 0, body)
             }
-
-            is SocketTimeoutException -> NetworkError.Timeout("Timeout Error")
-            is IOException -> NetworkError.Network("Thread Error")
-            else -> NetworkError.Unknown("Unknown Error")
+            is SocketTimeoutException -> NetworkError.Timeout
+            is IOException -> NetworkError.NoInternet
+            else -> NetworkError.Unknown
         }
     }
 }
