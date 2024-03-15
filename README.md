@@ -68,6 +68,14 @@ example:
 include(":mySubmoduleFolder:moshimoshi")
 ```
 
+### Step 6: Update submodule
+
+Each time that library needs to be updated add:
+
+```bash
+git submodule update --remote --recursive
+```
+
 ## 🛠️ Features
 - **Easy Integration**: With minimal setup, you can integrate OAuth2 authentication flows into your Kotlin applications, making your development process smoother and faster.
 - **Retrofit Compatibility**: Leveraging Retrofit, one of the most popular HTTP client libraries for Android and JVM, ensures that your network operations are efficient, maintainable, and scalable.
