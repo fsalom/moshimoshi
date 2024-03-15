@@ -36,7 +36,7 @@ class MoshiMoshi(
             } else {
                 val code = response.code()
                 val body = response.errorBody()?.string() ?: ""
-                throw RuntimeException(NetworkError.Failure(code, body).toString())
+                throw NetworkError.Failure(code, body)
             }
         } catch (error: Exception) {
             throw handler(error)
