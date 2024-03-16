@@ -3,7 +3,6 @@ package com.moshimoshi.app.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.moshimoshi.app.presentation.login.LoginActivity
 import com.moshimoshi.network.MoshiMoshi
 import com.moshimoshi.network.authenticationcard.api.APIAuthenticationImpl
@@ -11,10 +10,8 @@ import com.moshimoshi.network.authenticator.AuthenticatorImpl
 import com.moshimoshi.network.entities.Endpoint
 import com.moshimoshi.network.entities.Method
 import com.moshimoshi.network.entities.Parameter
-import com.moshimoshi.network.interceptor.AuthInterceptor
+import com.moshimoshi.network.interceptor.auth.AuthInterceptor
 import com.moshimoshi.network.storage.datastore.TokenDataStoreImpl
-import okhttp3.MultipartBody
-import okhttp3.Request
 
 class Container() {
     companion object {
