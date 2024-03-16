@@ -1,3 +1,6 @@
+[![Release](https://jitpack.io/v/User/Repo.svg)]
+(https://jitpack.io/fsalom/moshimoshi)
+
 # MoshiMoshi
 
 ## ✍️ About
