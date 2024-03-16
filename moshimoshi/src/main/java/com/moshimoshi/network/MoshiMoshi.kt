@@ -14,14 +14,21 @@ import java.net.SocketTimeoutException
 
 class MoshiMoshi(
     private val baseUrl: String,
-    private val interceptor: Interceptor,
+    private val interceptors: Array<Interceptor>,
     val authenticator: Authenticator,
     converterFactory: Converter.Factory = GsonConverterFactory.create()
 ) {
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(converterFactory)
         .baseUrl(baseUrl)
-        .client(OkHttpClient.Builder().addInterceptor(interceptor).build())
+        .client(
+            OkHttpClient
+                .Builder()
+                .apply {
+                    interceptors.forEach { addInterceptor(it) }
+                }
+                .build()
+        )
         .build()
 
     fun <T> create(service: Class<T>?): T {
