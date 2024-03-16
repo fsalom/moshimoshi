@@ -6,7 +6,7 @@ before_install:
   - sdk install maven
   - mvn -v
 install:
-  - - mvn archetype:generate \
+  - mvn archetype:generate \
       -DarchetypeGroupId=com.github.fsalom \
       -DarchetypeArtifactId=moshimoshi \
       -DarchetypeVersion=1.0.13 \
