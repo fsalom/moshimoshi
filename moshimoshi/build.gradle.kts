@@ -4,9 +4,6 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.github.fsalom"
-version = "1.0.0"
-
 android {
     namespace = "com.moshimoshi.network"
     compileSdk = 34
@@ -55,7 +52,14 @@ dependencies {
 afterEvaluate {
     publishing {
         publications {
-
+            publications {
+                create<MavenPublication>("maven") {
+                    from (components["release"])
+                    groupId = "com.github.fsalom"
+                    artifactId = "moshimoshi"
+                    version = "1.0.3"
+                }
+            }
         }
     }
 }
