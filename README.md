@@ -1,5 +1,4 @@
-[![Release](https://jitpack.io/v/fsalom/moshimoshi.svg)]
-(https://jitpack.io/fsalom/moshimoshi)
+[![Release](https://jitpack.io/v/fsalom/moshimoshi.svg)](https://jitpack.io/fsalom/moshimoshi)
 
 # MoshiMoshi
 
