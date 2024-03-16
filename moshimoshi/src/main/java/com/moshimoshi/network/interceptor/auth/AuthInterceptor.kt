@@ -1,4 +1,4 @@
-package com.moshimoshi.network.interceptor
+package com.moshimoshi.network.interceptor.auth
 
 import com.moshimoshi.network.authenticator.Authenticator
 import com.moshimoshi.network.retrofit.authenticated
