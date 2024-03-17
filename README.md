@@ -12,70 +12,27 @@ In the modern application development landscape, securing your application's dat
 
 ## 📦 Installation 
 
-### Prerequisites
-
-- Git installed on your machine
-- An existing Git repository for your project
-
-### Step 1: Add the Library as a Submodule
-
-Open your terminal and navigate to the root directory of your project. Run the following command to add the Kotlin OAuth2 Retrofit Library as a submodule:
-
-```bash
-git submodule add https://github.com/fsalom/moshimoshi.git path/to/submodule
+### Step 1. Open the file `settings.gradle` (it looks like that)
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // add jitpack here 👇🏽
+        maven { url 'https://jitpack.io' }
+       ...
+    }
+} 
+...
 ```
-Save to grepper
+### Step 2. Sync the project
 
-### Step 2: Initialize and Update the Submodule
-
-After adding the submodule, you need to initialize it and fetch the contents. Run the following commands:
-
-```bash
-git submodule init
-git submodule update
-```
-
-These commands will initialize your local configuration file and fetch all the data from Moshi Moshi Library project, placing it in the path you specified.
-
-### Step 3: Commit the Submodule to Your Project
-
-Now that the submodule is added and initialized, you need to commit these changes to your project. This step ensures that other contributors can initialize and update the submodule on their end after pulling your project. Run the following commands:
-
-```bash
-git add .
-git commit -m "Add MoshiMoshi Library as a submodule."
-git push
-```
-
-### Step 4: Cloning a Project with Submodules
-
-If someone is cloning your project with the submodule for the first time, they should clone the repository as usual and then run the following commands to initialize and update the submodules:
-
-```bash
-git clone https://github.com/your-username/your-project.git
-cd your-project
-git submodule update --init --recursive
-```
-
-This ensures that MoshiMoshi Library submodule is correctly set up and ready to use in their local development environment.
-
-### Step 5: Add dependency to your project
-
-In the `setting.gradle` of your project you must add:
-
-```bash
-include(":PATH_TO_SUBMODULE:moshimoshi")
-
-example:
-include(":mySubmoduleFolder:moshimoshi")
-```
-
-### Step 6: Update submodule
-
-Each time that library needs to be updated add:
-
-```bash
-git submodule update --remote --recursive
+### Step 3. Add `compose-markdown` dependency
+```groovy
+dependencies {
+    implementation 'com.github.jeziellago:compose-markdown:{LAST-RELEASE}'
+}
 ```
 
 ## 🛠️ Features
