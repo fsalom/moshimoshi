@@ -69,6 +69,6 @@ class Container() {
 
     val moshi = MoshiMoshi(
         baseUrl = "https://rickandmortyapi.com/api/",
-        interceptor = authInterceptor,
+        interceptors = arrayOf(authInterceptor),
         authenticator = authenticator)
 }
