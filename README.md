@@ -31,7 +31,7 @@ dependencyResolutionManagement {
 ### Step 3. Add `compose-markdown` dependency
 ```groovy
 dependencies {
-    implementation 'com.github.jeziellago:compose-markdown:{LAST-RELEASE}'
+    implementation 'com.github.fsalom:moshimoshi:{LAST-RELEASE}'
 }
 ```
 
