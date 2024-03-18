@@ -12,7 +12,8 @@ In the modern application development landscape, securing your application's dat
 
 ## 📦 Installation 
 
-### Step 1. Open the file `settings.gradle` (it looks like that)
+### Step 1. Add jitpack dependency
+Open the file `settings.gradle` (it looks like that)
 ```groovy
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -26,6 +27,23 @@ dependencyResolutionManagement {
 } 
 ...
 ```
+
+Or open the file `settings.gradle.kts` (it looks like that)
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // add jitpack here 👇🏽
+        maven("https://jitpack.io")
+       ...
+    }
+} 
+...
+```
+
 ### Step 2. Sync the project
 
 ### Step 3. Add `compose-markdown` dependency
