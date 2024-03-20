@@ -46,7 +46,7 @@ dependencyResolutionManagement {
 
 ### Step 2. Sync the project
 
-### Step 3. Add `compose-markdown` dependency
+### Step 3. Add dependency
 ```groovy
 dependencies {
     implementation 'com.github.fsalom:moshimoshi:{LAST-RELEASE}'
