@@ -59,6 +59,7 @@ class MoshiMoshi(
             }
             is SocketTimeoutException -> NetworkError.Timeout
             is IOException -> NetworkError.NoInternet
+            is NetworkError -> error
             else -> NetworkError.Unknown
         }
     }
