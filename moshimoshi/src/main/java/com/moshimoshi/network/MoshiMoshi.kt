@@ -31,7 +31,7 @@ class MoshiMoshi(
         )
         .build()
 
-    fun <T> create(service: Class<T>?): T {
+    fun <T> create(service: Class<T>): T {
         return retrofit.create(service)
     }
 
