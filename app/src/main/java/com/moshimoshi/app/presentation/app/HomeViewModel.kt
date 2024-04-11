@@ -13,7 +13,12 @@ import kotlinx.coroutines.launch
 class HomeViewModel(): ViewModel() {
     private var _message: MutableStateFlow<String> = MutableStateFlow("")
     var message: StateFlow<String> = _message
+    private var _isLogged: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var isLogged: StateFlow<Boolean> = _isLogged
 
+    fun initialize() {
+        loadAuthenticated()
+    }
 
     fun loadAuthenticated() {
         viewModelScope.launch {

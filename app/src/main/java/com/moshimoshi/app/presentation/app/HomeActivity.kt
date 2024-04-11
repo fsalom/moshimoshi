@@ -32,6 +32,7 @@ val Context.dataStore by preferencesDataStore(
     name = "settings")
 class HomeActivity : ComponentActivity() {
     private val viewModel = HomeViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,6 +45,7 @@ class HomeActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val message by viewModel.message.collectAsState()
+                    viewModel.initialize()
                     Column(modifier = Modifier.padding(all = 20.dp)) {
                         Text(
                             text = "Hello!"
