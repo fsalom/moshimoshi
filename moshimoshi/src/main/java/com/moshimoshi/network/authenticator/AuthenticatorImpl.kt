@@ -40,7 +40,7 @@ class AuthenticatorImpl (
             tokens.accessToken.let { tokenStore.setAccessToken(it) }
             tokens.refreshToken.let { tokenStore.setRefreshToken(it) }
         } catch (error: Exception) {
-            handler(error)
+            throw handler(error)
         }
     }
 
