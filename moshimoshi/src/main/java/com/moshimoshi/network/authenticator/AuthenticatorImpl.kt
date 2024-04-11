@@ -1,14 +1,17 @@
 package com.moshimoshi.network.authenticator
 
 import com.moshimoshi.network.authenticationcard.AuthenticationCard
+import com.moshimoshi.network.entities.NetworkError
 import com.moshimoshi.network.entities.Parameter
 import com.moshimoshi.network.entities.Tokens
 import com.moshimoshi.network.storage.TokenStorage
 import kotlinx.coroutines.runBlocking
 import okhttp3.Request
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 data class RefreshFailed(override val message: String) : Exception(message)
-data class LoginFailed(override val message: String) : Exception(message)
 
 class AuthenticatorImpl (
     override var tokenStore: TokenStorage,
@@ -32,29 +35,24 @@ class AuthenticatorImpl (
     }
 
     override suspend fun getNewToken(parameters: List<Parameter>) {
-        var tokens = card.getCurrentToken(parameters = parameters)
-        if (tokens != null) {
-            tokens.accessToken?.let { tokenStore.setAccessToken(it) }
-            tokens.refreshToken?.let { tokenStore.setRefreshToken(it) }
-        } else {
-            throw LoginFailed(message = "LOGIN FAILED")
+        try {
+            val tokens = card.getCurrentToken(parameters = parameters)
+            tokens.accessToken.let { tokenStore.setAccessToken(it) }
+            tokens.refreshToken.let { tokenStore.setRefreshToken(it) }
+        } catch (error: Exception) {
+            handler(error)
         }
     }
 
     override suspend fun getCurrentToken(): String? {
         try {
             val tokens = checkAndGetTokens()
-            if (tokens != null) {
-                tokens.accessToken?.let { tokenStore.setAccessToken(it) }
-                tokens.refreshToken?.let { tokenStore.setRefreshToken(it) }
-            }
+            tokens.accessToken.let { tokenStore.setAccessToken(it) }
+            tokens.refreshToken.let { tokenStore.setRefreshToken(it) }
 
-            if (tokens != null) {
-                tokens.accessToken?.let {
-                    return it.value
-                }
+            tokens.accessToken.let {
+                return it.value
             }
-            return tokens.accessToken.value
         } catch (e: Exception) {
             logout()
             return null
@@ -79,18 +77,29 @@ class AuthenticatorImpl (
                 refreshToken = refreshToken)
         } else if (refreshToken != null) {
             if (refreshToken.isValid) {
-                var tokens = card.refreshAccessToken(refreshToken = refreshToken.value)
-                if (tokens != null) {
-                    tokens.accessToken?.let { tokenStore.setAccessToken(it) }
-                    tokens.refreshToken?.let { tokenStore.setRefreshToken(it) }
-                    return tokens
-                }
-                throw RefreshFailed(message = "TOKENS IS NULL")
+                val tokens = card.refreshAccessToken(refreshToken = refreshToken.value)
+                tokens.accessToken.let { tokenStore.setAccessToken(it) }
+                tokens.refreshToken.let { tokenStore.setRefreshToken(it) }
+                return tokens
             } else {
                 throw RefreshFailed(message = "REFRESH NOT VALID")
             }
         } else {
             throw RefreshFailed(message = "REFRESH IS NULL")
+        }
+    }
+
+    private fun handler(error: Exception): Exception {
+        return when (error) {
+            is HttpException -> {
+                val code = error.response()?.code()
+                val body = error.response()?.errorBody()?.string() ?: ""
+                NetworkError.Failure(code ?: 0, body)
+            }
+            is SocketTimeoutException -> NetworkError.Timeout
+            is IOException -> NetworkError.NoInternet
+            is NetworkError -> error
+            else -> NetworkError.Unknown
         }
     }
 }
