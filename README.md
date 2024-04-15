@@ -1,4 +1,5 @@
 [![Release](https://jitpack.io/v/fsalom/moshimoshi.svg)](https://jitpack.io/fsalom/moshimoshi)
+[![minSDK](https://img.shields.io/badge/28-orange?style=flat-square)](https://img.shields.io/badge/28-orange?style=flat-square)
 
 # MoshiMoshi
 
