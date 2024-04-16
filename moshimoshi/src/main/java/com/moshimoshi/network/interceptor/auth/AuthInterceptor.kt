@@ -2,6 +2,7 @@ package com.moshimoshi.network.interceptor.auth
 
 import com.moshimoshi.network.authenticator.Authenticator
 import com.moshimoshi.network.retrofit.authenticated
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -13,7 +14,9 @@ class AuthInterceptor(private val authenticator: Authenticator) : Interceptor {
 
         return when {
             originRequest.authenticated() -> {
-                var requestAuthenticated = authenticator.authorize(request = requestWithHeaders)
+                var requestAuthenticated = runBlocking {
+                    authenticator.authorize(request = requestWithHeaders)
+                }
                 chain.proceed(requestAuthenticated.build())
             }
             else -> {

@@ -26,12 +26,10 @@ class AuthenticatorImpl (
             return@runBlocking request
         }
     }
-    override fun authorize(request: Request.Builder ): Request.Builder  {
-        return runBlocking {
-            val accessToken = getCurrentToken()
-            request.addHeader("Authorization", "Bearer $accessToken")
-            return@runBlocking request
-        }
+    override suspend fun authorize(request: Request.Builder ): Request.Builder  {
+        val accessToken = getCurrentToken()
+        request.addHeader("Authorization", "Bearer $accessToken")
+        return request
     }
 
     override suspend fun getNewToken(parameters: List<Parameter>) {
