@@ -48,7 +48,7 @@ afterEvaluate {
                     from (components["release"])
                     groupId = "com.github.fsalom"
                     artifactId = "moshimoshi"
-                    version = "1.1.3.2"
+                    version = "1.1.3.3"
                 }
             }
         }
