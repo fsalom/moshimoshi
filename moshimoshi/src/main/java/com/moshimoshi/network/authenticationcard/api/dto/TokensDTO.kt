@@ -13,6 +13,7 @@ data class TokensDTO(
 fun TokensDTO.toDomain(): Tokens {
     return Tokens(
         accessToken = Token(value = accessToken, timestampExpires = System.currentTimeMillis() + expiresIn * 1000),
-        refreshToken = Token(value = refreshToken, timestampExpires = System.currentTimeMillis() + 648000 * 1000)
+        //Refresh token expiration time by default is 365 days
+        refreshToken = Token(value = refreshToken, timestampExpires = System.currentTimeMillis() + 31536000 * 1000)
     )
 }
