@@ -21,7 +21,14 @@ class AuthInterceptor(private val authenticator: Authenticator) : Interceptor {
                         authenticator.authorize(requestWithHeaders)
                     }
                 }.let { requestAuthenticated ->
-                    chain.proceed(requestAuthenticated.build())
+                    var response = chain.proceed(requestAuthenticated.build())
+                    if (response.code() == 401){
+                        runBlocking {
+                            authenticator.logout()
+                        }
+                        return response;
+                    }
+                    return response;
                 }
             }
             else -> {
