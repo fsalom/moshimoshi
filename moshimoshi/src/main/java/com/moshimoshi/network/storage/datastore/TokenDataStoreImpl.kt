@@ -50,7 +50,13 @@ class TokenDataStoreImpl(uniqueIdentifier: String, private val dataStore: DataSt
 
     override suspend fun clear() {
         dataStore.edit { preferences ->
-            preferences.clear()
+            preferences.remove(longPreferencesKey(uniqueIdentifierKey))
+            preferences.remove(longPreferencesKey(accessTokenKey))
+            preferences.remove(longPreferencesKey(accessTokenDateKey))
+            preferences.remove(longPreferencesKey(refreshTokenKey))
+            preferences.remove(longPreferencesKey(refreshTokenDateKey))
+            preferences.remove(longPreferencesKey(idTokenKey))
+            preferences.remove(longPreferencesKey(idTokenDateKey))
         }
     }
 
