@@ -1,9 +1,12 @@
 package com.moshimoshi.app.presentation.app
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moshimoshi.app.data.datasource.character.api.CharacterApi
+import com.moshimoshi.app.data.datasource.user.api.UserApi
 import com.moshimoshi.app.di.Container
+import com.moshimoshi.app.presentation.login.LoginActivity
 import com.moshimoshi.network.entities.Token
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,14 +20,25 @@ class HomeViewModel(): ViewModel() {
     var isLogged: StateFlow<Boolean> = _isLogged
 
     fun initialize() {
-        loadAuthenticated()
+        viewModelScope.launch {
+            if (!Container.getInstance().authenticator.isLogged()) {
+                val intent = Intent()
+                intent.setClassName(Container.context.packageName, LoginActivity::class.java.canonicalName)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                Container.context.startActivity(intent)
+            }
+        }
     }
 
     fun loadAuthenticated() {
         viewModelScope.launch {
-            var api = Container.getInstance().moshi.create(CharacterApi::class.java)
-            var x = Container.getInstance().moshi.load {
-                api.getCharacter(id = 1)
+            var api = Container.getInstance().moshi.create(UserApi::class.java)
+            try {
+                var me = Container.getInstance().moshi.load {
+                    api.getMe()
+                }
+            } catch (e:Exception){
+
             }
             _message.value = "Llamada autenticada"
         }
