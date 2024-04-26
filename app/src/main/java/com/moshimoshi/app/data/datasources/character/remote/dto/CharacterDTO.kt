@@ -1,4 +1,4 @@
-package com.moshimoshi.app.data.datasource.character.api.dto
+package com.moshimoshi.app.data.datasources.character.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
