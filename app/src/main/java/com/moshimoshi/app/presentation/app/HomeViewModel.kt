@@ -3,17 +3,20 @@ package com.moshimoshi.app.presentation.app
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moshimoshi.app.data.datasource.character.api.CharacterApi
-import com.moshimoshi.app.data.datasource.user.api.UserApi
+import com.moshimoshi.app.data.datasources.character.remote.endpoints.CharacterApi
+import com.moshimoshi.app.data.datasources.user.remote.endpoints.UserApi
 import com.moshimoshi.app.di.Container
+import com.moshimoshi.app.domain.usecases.character.CharacterUseCases
+import com.moshimoshi.app.domain.usecases.user.UserUseCases
 import com.moshimoshi.app.presentation.login.LoginActivity
-import com.moshimoshi.network.entities.Token
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel(): ViewModel() {
+class HomeViewModel(val characterUseCases: CharacterUseCases,
+                    val userUseCases: UserUseCases): ViewModel() {
+
+
     private var _message: MutableStateFlow<String> = MutableStateFlow("")
     var message: StateFlow<String> = _message
     private var _isLogged: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -32,24 +35,18 @@ class HomeViewModel(): ViewModel() {
 
     fun loadAuthenticated() {
         viewModelScope.launch {
-            var api = Container.getInstance().moshi.create(UserApi::class.java)
             try {
-                var me = Container.getInstance().moshi.load {
-                    api.getMe()
-                }
+                userUseCases.getMe()
+                _message.value = "Llamada autenticada"
             } catch (e:Exception){
-
+                _message.value = "Error: Llamada autenticada"
             }
-            _message.value = "Llamada autenticada"
         }
     }
 
     fun load() {
         viewModelScope.launch {
-            var api = Container.getInstance().moshi.create(CharacterApi::class.java)
-            var x = Container.getInstance().moshi.load {
-                api.getCharacter2(id = 1)
-            }
+            var characters = characterUseCases.getCharacters()
             _message.value = "Llamada normal"
         }
     }
@@ -63,7 +60,7 @@ class HomeViewModel(): ViewModel() {
 
     fun expireAccessToken() {
         viewModelScope.launch {
-            var accessToken = Container.getInstance().moshi.authenticator.tokenStore.getAccessToken()
+            val accessToken = Container.getInstance().moshi.authenticator.tokenStore.getAccessToken()
             accessToken?.timestampExpires = System.currentTimeMillis()
             if (accessToken != null) {
                 Container.getInstance().moshi.authenticator.tokenStore.setAccessToken(accessToken)
@@ -74,9 +71,9 @@ class HomeViewModel(): ViewModel() {
 
     fun expireAccessAndRefreshToken() {
         viewModelScope.launch {
-            var accessToken = Container.getInstance().moshi.authenticator.tokenStore.getAccessToken()
+            val accessToken = Container.getInstance().moshi.authenticator.tokenStore.getAccessToken()
             accessToken?.timestampExpires = System.currentTimeMillis()
-            var refreshToken = Container.getInstance().moshi.authenticator.tokenStore.getRefreshToken()
+            val refreshToken = Container.getInstance().moshi.authenticator.tokenStore.getRefreshToken()
             refreshToken?.timestampExpires = System.currentTimeMillis()
             if (accessToken != null && refreshToken != null) {
                 Container.getInstance().moshi.authenticator.tokenStore.setAccessToken(accessToken)

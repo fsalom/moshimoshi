@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -22,15 +21,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.preferencesDataStore
-import com.moshimoshi.app.data.datasource.character.api.CharacterApi
+import com.moshimoshi.app.data.datasources.character.remote.CharacterRemoteDataSourceImpl
+import com.moshimoshi.app.data.datasources.user.remote.UserRemoteDataSourceImpl
+import com.moshimoshi.app.data.repositories.character.CharacterRepositoryImpl
+import com.moshimoshi.app.data.repositories.user.UserRepositoryImpl
 import com.moshimoshi.app.di.Container
+import com.moshimoshi.app.domain.usecases.character.CharacterUseCasesImpl
+import com.moshimoshi.app.domain.usecases.user.UserUseCases
+import com.moshimoshi.app.domain.usecases.user.UserUseCasesImpl
 import com.moshimoshi.app.ui.theme.MoshiMoshiTheme
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore(
     name = "settings")
 class HomeActivity : ComponentActivity() {
+    private val userRemote = UserRemoteDataSourceImpl(moshi = Container.getInstance().moshi)
+    private val userRepository = UserRepositoryImpl(remote = userRemote)
+    private val userUseCases = UserUseCasesImpl(repository = userRepository)
+    private val characterRemote = CharacterRemoteDataSourceImpl(moshi = Container.getInstance().moshi)
+    private val characterRepository = CharacterRepositoryImpl(remote = characterRemote)
+    private val characterUseCases = CharacterUseCasesImpl(repository = characterRepository)
     private val viewModel = HomeViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
