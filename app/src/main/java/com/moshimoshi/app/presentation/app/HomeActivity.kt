@@ -40,7 +40,7 @@ class HomeActivity : ComponentActivity() {
     private val characterRemote = CharacterRemoteDataSourceImpl(moshi = Container.getInstance().moshi)
     private val characterRepository = CharacterRepositoryImpl(remote = characterRemote)
     private val characterUseCases = CharacterUseCasesImpl(repository = characterRepository)
-    private val viewModel = HomeViewModel()
+    private val viewModel = HomeViewModel(characterUseCases = characterUseCases, userUseCases = userUseCases)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
