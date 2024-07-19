@@ -6,6 +6,7 @@ sealed class NetworkError: Exception() {
     object NoInternet : NetworkError()
     object EmptyBody : NetworkError()
     object Timeout: NetworkError()
+    object NoRefresh: NetworkError()
 
     override fun toString(): String {
         return when (this) {
@@ -14,6 +15,7 @@ sealed class NetworkError: Exception() {
             is NoInternet -> "NetworkError: NoInternet"
             is Timeout -> "NetworkError: Timeout"
             is EmptyBody -> "NetworkError: EmptyBody"
+            is NoRefresh -> "NetworkError: Refresh endpoint not set"
         }
     }
 }

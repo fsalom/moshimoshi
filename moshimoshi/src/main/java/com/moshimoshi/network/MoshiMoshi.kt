@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
 
-class MoshiMoshi(
+open class MoshiMoshi(
     private val baseUrl: String,
     private val interceptors: Array<Interceptor>,
     val authenticator: Authenticator,
@@ -35,7 +35,7 @@ class MoshiMoshi(
         return retrofit.create(service)
     }
 
-    suspend fun <T> load(call: suspend () -> Response<T>): T {
+    open suspend fun <T> load(call: suspend () -> Response<T>): T {
         try {
             val response = call()
             if (response.isSuccessful) {
