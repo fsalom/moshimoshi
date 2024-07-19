@@ -66,7 +66,12 @@ class AuthenticatorImpl (
     }
 
     override suspend fun isLogged(): Boolean {
-        return tokenStore.getRefreshToken()?.isValid ?: false
+        val refreshToken = tokenStore.getRefreshToken()
+        if(refreshToken != null) {
+            return refreshToken.isValid
+        } else {
+            return tokenStore.getAccessToken()?.isValid ?: false
+        }
     }
 
     override suspend fun logout() {
