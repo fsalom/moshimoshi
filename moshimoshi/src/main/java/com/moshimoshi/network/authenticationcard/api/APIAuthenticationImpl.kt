@@ -17,7 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 
 class APIAuthenticationImpl(private var loginEndpoint: Endpoint,
-                            private var refreshEndpoint: Endpoint,
+                            private var refreshEndpoint: Endpoint?,
                             private val packageName: String,
                             private val className: String,
                             private val context: Context): AuthenticationCard {
@@ -36,10 +36,14 @@ class APIAuthenticationImpl(private var loginEndpoint: Endpoint,
         return withContext(Dispatchers.IO) {
             val completeRefreshEndpoint = refreshEndpoint
             val refreshParameter = Parameter(key = "refresh_token", value = refreshToken)
-            completeRefreshEndpoint.add(params = listOf<Parameter>(refreshParameter))
-            val request = completeRefreshEndpoint.getRequest()
-            val response = OkHttpClient().newCall(request).execute()
-            getTokensOrFail(response)
+            if (completeRefreshEndpoint != null) {
+                completeRefreshEndpoint.add(params = listOf<Parameter>(refreshParameter))
+                val request = completeRefreshEndpoint.getRequest()
+                val response = OkHttpClient().newCall(request).execute()
+                getTokensOrFail(response)
+            } else {
+                throw NetworkError.NoRefresh
+            }
         }
     }
 

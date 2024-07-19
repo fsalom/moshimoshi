@@ -36,7 +36,11 @@ class AuthenticatorImpl (
         try {
             val tokens = card.getCurrentToken(parameters = parameters)
             tokens.accessToken.let { tokenStore.setAccessToken(it) }
-            tokens.refreshToken.let { tokenStore.setRefreshToken(it) }
+            tokens.refreshToken.let {
+                if (it != null) {
+                    tokenStore.setRefreshToken(it)
+                }
+            }
         } catch (error: Exception) {
             throw handler(error)
         }
@@ -46,7 +50,11 @@ class AuthenticatorImpl (
         try {
             val tokens = checkAndGetTokens()
             tokens.accessToken.let { tokenStore.setAccessToken(it) }
-            tokens.refreshToken.let { tokenStore.setRefreshToken(it) }
+            tokens.refreshToken.let {
+                if (it != null) {
+                    tokenStore.setRefreshToken(it)
+                }
+            }
 
             tokens.accessToken.let {
                 return it.value
@@ -62,8 +70,10 @@ class AuthenticatorImpl (
     }
 
     override suspend fun logout() {
-        tokenStore.clear()
-        card.logout()
+        runBlocking {
+            tokenStore.clear()
+            card.logout()
+        }
     }
 
     private suspend fun checkAndGetTokens(): Tokens {
@@ -77,7 +87,11 @@ class AuthenticatorImpl (
             if (refreshToken.isValid) {
                 val tokens = card.refreshAccessToken(refreshToken = refreshToken.value)
                 tokens.accessToken.let { tokenStore.setAccessToken(it) }
-                tokens.refreshToken.let { tokenStore.setRefreshToken(it) }
+                tokens.refreshToken.let {
+                    if (it != null) {
+                        tokenStore.setRefreshToken(it)
+                    }
+                }
                 return tokens
             } else {
                 throw RefreshFailed(message = "REFRESH NOT VALID")
