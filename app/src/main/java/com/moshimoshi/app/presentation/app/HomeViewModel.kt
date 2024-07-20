@@ -1,6 +1,7 @@
 package com.moshimoshi.app.presentation.app
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moshimoshi.app.data.datasources.character.remote.endpoints.CharacterApi
@@ -39,6 +40,7 @@ class HomeViewModel(val characterUseCases: CharacterUseCases,
                 userUseCases.getMe()
                 _message.value = "Llamada autenticada"
             } catch (e:Exception){
+                Log.e("MOSHI", "loadAuthenticated: "+ e.message, e)
                 _message.value = "Error: Llamada autenticada"
             }
         }
@@ -46,8 +48,13 @@ class HomeViewModel(val characterUseCases: CharacterUseCases,
 
     fun load() {
         viewModelScope.launch {
-            var characters = characterUseCases.getCharacters()
-            _message.value = "Llamada normal"
+            try {
+                var characters = characterUseCases.getCharacters()
+                _message.value = "Llamada normal"
+            } catch (e: Exception) {
+                Log.e("MOSHI", "load: "+ e.message, e)
+                _message.value = "Error: Llamada"
+            }
         }
     }
 

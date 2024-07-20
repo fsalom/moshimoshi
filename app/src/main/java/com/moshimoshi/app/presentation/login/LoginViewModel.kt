@@ -2,13 +2,20 @@ package com.moshimoshi.app.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.moshimoshi.app.data.datasources.character.remote.dto.CharacterDTO
 import com.moshimoshi.app.di.Container
+import com.moshimoshi.network.MoshiMoshi
+import com.moshimoshi.network.authenticator.Authenticator
 import com.moshimoshi.network.entities.Parameter
+import com.moshimoshi.network.retrofit.Authenticated
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import okhttp3.Interceptor
+import retrofit2.Response
+import retrofit2.http.GET
 
 class LoginViewModel(): ViewModel() {
     private var _isLogged: MutableStateFlow<Boolean> = MutableStateFlow(false)
