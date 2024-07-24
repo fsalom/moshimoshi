@@ -37,7 +37,7 @@ class TokenDataStoreImpl(uniqueIdentifier: String, private val dataStore: DataSt
         get() = this[longPreferencesKey(accessTokenDateKey)] ?: 0
 
     private inline val Preferences.refreshToken
-        get() = this[stringPreferencesKey(refreshTokenKey)] ?: ""
+        get() = this[stringPreferencesKey(refreshTokenKey)]
 
     private inline val Preferences.refreshTokenExpires
         get() = this[longPreferencesKey(refreshTokenDateKey)] ?: 0
@@ -77,7 +77,7 @@ class TokenDataStoreImpl(uniqueIdentifier: String, private val dataStore: DataSt
         }
         .distinctUntilChanged()
 
-    private val refreshTokenFlow: Flow<Token> = dataStore.data
+    private val refreshTokenFlow: Flow<Token?> = dataStore.data
         .catch {
             // throws an IOException when an error is encountered when reading data
             if (it is IOException) {
@@ -87,10 +87,12 @@ class TokenDataStoreImpl(uniqueIdentifier: String, private val dataStore: DataSt
             }
         }
         .map { preferences ->
-            Token(
-                value = preferences.refreshToken,
-                timestampExpires = preferences.refreshTokenExpires
-            )
+            preferences.refreshToken?.let {
+                Token(
+                    value = it,
+                    timestampExpires = preferences.refreshTokenExpires
+                )
+            }
         }
         .distinctUntilChanged()
 

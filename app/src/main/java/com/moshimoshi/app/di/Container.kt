@@ -54,7 +54,7 @@ class Container() {
 
     private val authenticationCard = APIAuthenticationImpl(
         loginEndpoint = loginEndpoint,
-        refreshEndpoint = refreshEndpoint,
+        refreshEndpoint = null,
         packageName = context.packageName,
         className = LoginActivity::class.java.canonicalName,
         context = context)
