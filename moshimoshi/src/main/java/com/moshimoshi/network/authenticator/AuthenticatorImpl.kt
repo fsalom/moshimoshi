@@ -84,7 +84,7 @@ class AuthenticatorImpl (
     private suspend fun checkAndGetTokens(): Tokens {
         val accessToken = tokenStore.getAccessToken()
         val refreshToken = tokenStore.getRefreshToken()
-        return if (accessToken != null && accessToken.isValid && refreshToken != null) {
+        return if (accessToken != null && accessToken.isValid) {
             Tokens(
                 accessToken = accessToken,
                 refreshToken = refreshToken)
