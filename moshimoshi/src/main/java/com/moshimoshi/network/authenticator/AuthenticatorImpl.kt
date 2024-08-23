@@ -1,6 +1,7 @@
 package com.moshimoshi.network.authenticator
 
 import com.moshimoshi.network.authenticationcard.AuthenticationCard
+import com.moshimoshi.network.entities.Endpoint
 import com.moshimoshi.network.entities.NetworkError
 import com.moshimoshi.network.entities.Parameter
 import com.moshimoshi.network.entities.Tokens
@@ -32,9 +33,9 @@ class AuthenticatorImpl (
         return request
     }
 
-    override suspend fun getNewToken(parameters: List<Parameter>) {
+    override suspend fun getNewToken(parameters: List<Parameter>, endpoint: Endpoint?) {
         try {
-            val tokens = card.getCurrentToken(parameters = parameters)
+            val tokens = card.getCurrentToken(parameters = parameters, endpoint = endpoint)
             tokens.accessToken.let { tokenStore.setAccessToken(it) }
             tokens.refreshToken.let {
                 if (it != null) {
