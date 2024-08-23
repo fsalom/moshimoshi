@@ -37,7 +37,7 @@ class LoginViewModel(): ViewModel() {
                     Parameter(key = "username", value = username),
                     Parameter(key = "password", value = password)
                 )
-                Container.getInstance().authenticator.getNewToken(parameters)
+                Container.getInstance().authenticator.getNewToken(parameters, null)
                 load()
             } catch (e:Exception) {
                 _error.value = "La autenticación ha fallado"
