@@ -22,9 +22,12 @@ class APIAuthenticationImpl(private var loginEndpoint: Endpoint,
                             private val className: String,
                             private val context: Context): AuthenticationCard {
 
-    override suspend fun getCurrentToken(parameters: List<Parameter>): Tokens {
+    override suspend fun getCurrentToken(parameters: List<Parameter>, endpoint: Endpoint?): Tokens {
         return withContext(Dispatchers.IO) {
-            val completeLoginEndpoint = loginEndpoint
+            var completeLoginEndpoint = loginEndpoint
+            if (endpoint != null) {
+                completeLoginEndpoint = endpoint
+            }
             completeLoginEndpoint.add(params = parameters)
             val request = completeLoginEndpoint.getRequest()
             val response = OkHttpClient().newCall(request).execute()
